@@ -1,0 +1,26 @@
+specVersion: 0.0.2
+description: Reference subgraph implementation using Bancor v2
+repository: https://github.com/messari/subgraphs
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: DSToken
+    network: ropsten
+    source:
+      address: "0xf35ccfbce1228014f66809edafcdb836bfe388f5"
+      abi: DSToken
+      startBlock: 8831964
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/handlers.ts
+      entities:
+        - Issuance
+      abis:
+        - name: DSToken
+          file: ./abis/DSToken.json
+      eventHandlers:
+        - event: Issuance(uint256)
+          handler: handleIssuance
