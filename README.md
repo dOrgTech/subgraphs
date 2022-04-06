@@ -11,7 +11,7 @@
 
 ## Recommended Development Workflow
 
-- Start with understanding the protocol and how it works
+- Start with understanding the protocol. An easy start could be interacting with the protocol UI on testnets, check transaction details on Etherscan and pay attention to key events that are emitted
 - Go over the smart contracts. Identify the ones that we need to pull data from
   - Usually each protocol has a factory contract that's responsible for tracking other contracts (e.g. Uniswap's Factory contract, Aave's Lending Pool Registry, Yearn's Registry)
   - Also a pool/vault contract that's responsible for pool level bookkeeping and transactions (e.g. Uniswap's Pair contract, Yearn's Vault contract, Aave's Lending Pool contract)
@@ -20,7 +20,7 @@
   - For example, usually it's easier to start writing mappings for transactions and usage metrics
 - Go over the documents in the `docs` folder. That should answer lots of questions you may have
 - Implement the mappings, deploy and test your data using either Hosted Service or The Graph Studio
-- Document in the README how important metrics are calculated (TVL, fees, revenue). Feel free to reach out to me if anything isn't clear
+- Refer to the [methodology](https://docs.google.com/spreadsheets/d/1C5n13sN57WVTK0SJNoQR0qLjV6SAGrFwzJoMkq8nNos/edit#gid=686701533) for metrics calculation (e.g. revenue, fees, TVL). Feel free to reach out to me if anything isn't clear
 - Verify your subgraph against other sources and include specific links to these sources in the README. Below are some common sources:
   - Project's official analytics dashboard
   - [DeFi Llama](https://defillama.com/) (for TVL)
