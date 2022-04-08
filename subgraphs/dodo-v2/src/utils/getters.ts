@@ -30,16 +30,17 @@ import {
 } from "./constants";
 import { Address, BigDecimal } from "@graphprotocol/graph-ts";
 
-import { ERC20 } from "../../generated/ERC20/ERC20";
+// import { ERC20 } from "../../generated/ERC20/ERC20";
 
 import { DVMFactory } from "../../generated/DVMFactory/DVMFactory";
-import { CrowdPoolingFactory } from "../../generated/CrowdPoolingFactory/CrowdPoolingFactory";
-import { DSPFactory } from "../../generated/DSPFactory/DSPFactory";
-import { DPPFactory } from "../../generated/DPPFactory/DPPFactory";
-import { DVM } from "../../generated/DVM/DVM";
-import { CP } from "../../generated/CP/CP";
-import { DPP } from "../../generated/DPP/DPP";
-import { DSP } from "../../generated/DSP/DSP";
+// import { CrowdPoolingFactory } from "../../generated/CrowdPoolingFactory/CrowdPoolingFactory";
+// import { DSPFactory } from "../../generated/DSPFactory/DSPFactory";
+// import { DPPFactory } from "../../generated/DPPFactory/DPPFactory";
+import { DVM } from "../../generated/DVMFactory/DVM";
+import { DVM as DVMTemplate } from "../../generated/templates"
+// import { CP } from "../../generated/CP/CP";
+// import { DPP } from "../../generated/DPP/DPP";
+// import { DSP } from "../../generated/DSP/DSP";
 
 let STABLE_COINS: string[] = [
   "0x6b175474e89094c44da98b954eedeac495271d0f", // dai
@@ -117,6 +118,7 @@ export function getOrCreatePool(
   let lpToken = getOrCreateToken(poolAddress);
 
   if (!pool) {
+    DVMTemplate.create(poolAddress)
     pool = new LiquidityPool(poolAddress.toHex());
     pool.protocol = dodo.id;
     pool.inputTokens = [it.id, ot.id];
@@ -291,6 +293,7 @@ export function getTokenAmountPriceAv(
     //   //   let dspPoolAdd = callResult4.value;
     //   // }
     //   //   ////////////////
+    log.info("before accessing dvm pool add", [tokenAddress.toHexString(), add]);
     let padd = dvmPoolAdd[0];
 
     log.info("DVM POOL ADDRESS SET AS: {}", [padd.toString()]);

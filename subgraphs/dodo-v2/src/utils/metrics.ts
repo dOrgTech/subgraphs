@@ -1,4 +1,4 @@
-import { BigDecimal, Address, ethereum, BigInt } from "@graphprotocol/graph-ts";
+import {BigDecimal, Address, ethereum, BigInt, log} from "@graphprotocol/graph-ts";
 import {
   _Account,
   _DailyActiveAccount,
@@ -91,7 +91,8 @@ export function updatePoolMetrics(
 
   let totalUSDval = 0;
 
-  for (let i = 0; i <= 1; i++) {
+  log.info("this is the transaction hash " + event.transaction.hash.toHexString(), [])
+  for (let i = 0; i < tokenAdds.length; i++) {
     let usdValueOfTransaction = getTokenAmountPriceAv(
       tokenAdds[i],
       trader,
