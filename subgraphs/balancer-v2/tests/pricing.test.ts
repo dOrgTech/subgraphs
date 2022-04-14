@@ -1,5 +1,5 @@
-import { test, assert } from "matchstick-as";
-import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
+import { test, assert, log } from "matchstick-as";
+import { Address, BigDecimal, BigInt, ethereum } from "@graphprotocol/graph-ts";
 import {
   createNewPoolBalanceChangeEvent,
   createNewPoolEvent,
@@ -12,8 +12,11 @@ import {
   handleSwap,
   handleTokensRegister,
 } from "../src/mappings/handlers";
+import {
+  calculatePrice, TokenInfo,
+} from "../src/common/pricing";
 import { LiquidityPool } from "../generated/schema";
-import { gnoBalPoolId, gnoBalPoolAddress, gno, bal } from "./state";
+import { gnoBalPoolId, gnoBalPoolAddress, gno, bal, usdcWethPoolId, usdcWethPoolAddress, weth, usdc } from "./state";
 
 test("Create and register pool", () => {
   let registerPoolEvent = createNewPoolEvent(gnoBalPoolId, gnoBalPoolAddress, 2);
@@ -76,4 +79,26 @@ test("Handle swap and updates base asset usd price value", () => {
     ethereum.Value.fromSignedBigIntArray(pool.inputTokenBalances),
     ethereum.Value.fromSignedBigIntArray(newAmounts),
   );
+});
+
+test("Calculate token price in USD", () => {
+  let amountA = BigDecimal.fromString("1348234840738200159828");
+  let amountB = BigDecimal.fromString("3519717265013");
+
+  const tokenInfo: TokenInfo | null = calculatePrice(
+    Address.fromString(weth.id),
+    Address.fromString(usdc.id),
+    amountA,
+    amountB,
+    null,
+    null,
+  )
+
+  if (tokenInfo) {
+    log.info(tokenInfo.price.toString(), []);
+    log.info(tokenInfo.address.toHexString(), []);
+  }
+
+  let pool = LiquidityPool.load(usdcWethPoolId.toHexString());
+  if (pool == null) throw new Error("Pool is not defined");
 });
